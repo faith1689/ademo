@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>按钮点击获取超链接内容</title>
+</head>
+<body>
+    <label for="inputField">输入网址：</label>
+    <input type="text" id="inputField" placeholder="输入一个网址">
+
+    <button id="openLinkButton">打开链接并获取内容</button>
+
+    <script>
+        document.getElementById("openLinkButton").addEventListener("click", function () {
+            // 获取输入框中的网址
+            var url = document.getElementById("inputField").value;
+
+            // 通过创建一个隐藏的iframe来打开网址
+            var iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            iframe.src = url;
+            document.body.appendChild(iframe);
+
+            // 监听iframe的加载事件，获取指定label的内容
+            iframe.onload = function () {
+                try {
+                    // 在此处修改"labelToGetContent"为目标网页中需要获取内容的标签ID或类名
+                    var content = iframe.contentDocument.getElementById("nav-search-input").textContent;
+
+                    // 将获取到的内容显示在输入框中
+                    document.getElementById("inputField").value = content;
+                } catch (error) {
+                    // 如果获取内容失败，可以在此处处理错误
+                    console.error("获取内容失败：" + error);
+                }
+
+                // 移除iframe，清理资源
+                document.body.removeChild(iframe);
+            };
+        });
+    </script>
+</body>
+</html>
